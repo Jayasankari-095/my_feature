@@ -11,14 +11,14 @@ import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons'; // or ot
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [userType, setUserType] = useState('rider'); // Default role
+ 
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5000/api/login', {
+      const response = await axios.post('http://localhost:5000/api/auth/login', {
         email,
         password,
       });
@@ -28,7 +28,6 @@ const Login = () => {
       if (response.data.message === 'Login successful!') {
         const { userId, role } = response.data;
         localStorage.setItem('userId', userId);
-        localStorage.setItem('role', role);
 
         // Toast with smiley emoji after successful login
         toast.success(

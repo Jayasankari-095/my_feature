@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify'; // Import ToastContainer and toast
 import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for toast notifications
+import { FaSmile } from 'react-icons/fa';
 
 
 const Register = () => {
@@ -10,23 +11,27 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [mobileNumber, setMobileNumber] = useState('');
   const [password, setPassword] = useState('');
+  const [age, setAge] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [role, setRole] = useState('rider'); // Updated role values
   const [gender, setGender] = useState('');
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
 
+    if (!age) {
+      toast.error('Age is required');
+      return;
+    }
     // Validation checks...
 
     try {
-      const response = await axios.post('http://localhost:5000/api/register', {
+      const response = await axios.post('http://localhost:5000/api/auth/register', {
         name,
         email,
-        mobileNumber,
+       mobileNumber,
         password,
-        role,
+        age,
         gender,
       });
 
@@ -35,7 +40,7 @@ const Register = () => {
       if (response.data.success) {
         toast.success(
           <div className="flex items-center">
-            <FaSmile className="mr-2 text-2xl text-yellow-500" /> {/* Smile icon */}
+            <FaSmile className="mr-2 text-2xl text-yellow-500" /> Smile icon
             <span>User registered successfully</span>
           </div>,
           {
@@ -112,7 +117,14 @@ const Register = () => {
               className="w-full p-2 border border-gray-300 rounded"
             />
 
-          
+<input
+  type="number"
+  placeholder="Age"
+  value={age}
+  onChange={(e) => setAge(e.target.value)}
+  required
+  className="w-full p-2 border border-gray-300 rounded"
+/>
 
             <label className="block text-gray-700">Gender:</label>
             <select
